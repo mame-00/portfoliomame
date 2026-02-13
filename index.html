@@ -6,7 +6,7 @@
     <title>Portfolio • Khoerul Imam</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet"/>
-    
+   
     <style>
         :root {
             --primary: #00f5d4;
@@ -18,14 +18,13 @@
             --text: #e2e8f0;
             --glow: rgba(0, 245, 212, 0.4);
             --glow-neon: 0 0 20px rgba(0,245,212,0.6), 0 0 40px rgba(0,245,212,0.4);
+            --primary-rgb: 0, 245, 212;
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Inter', system-ui, sans-serif;
             background: var(--bg);
@@ -33,36 +32,66 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
-            cursor: none;
+            cursor: none;           /* Sembunyikan cursor default */
         }
 
-        /* Custom Neon Cursor */
-        .cursor {
+        /* ── Custom Neon Cursor (versi ringan & responsif) ── */
+        .custom-cursor {
             position: fixed;
-            width: 24px;
-            height: 24px;
+            width: 36px;
+            height: 36px;
             border: 2px solid var(--primary);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
+            left: 0;
+            top: 0;
             transform: translate(-50%, -50%);
-            transition: all 0.15s ease;
             mix-blend-mode: difference;
             box-shadow: var(--glow-neon);
+            will-change: transform;
         }
 
-        .cursor::after {
+        .custom-cursor::after {
             content: '';
             position: absolute;
-            top: 50%; left: 50%;
-            width: 8px; height: 8px;
+            inset: 0;
+            margin: auto;
+            width: 10px;
+            height: 10px;
             background: var(--primary);
             border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px var(--primary);
+            box-shadow: 0 0 12px var(--primary), 0 0 24px var(--primary);
         }
 
-        /* Animated Gradient + Liquid Background */
+        .custom-cursor.hover {
+            transform: translate(-50%, -50%) scale(2.3);
+            border-color: transparent;
+            background: rgba(var(--primary-rgb), 0.12);
+            box-shadow: 0 0 35px var(--primary);
+        }
+
+        .custom-cursor.hover::after {
+            transform: scale(0.5);
+        }
+
+        /* Responsif & hide di touch device */
+        @media (max-width: 1024px) {
+            .custom-cursor { width: 32px; height: 32px; }
+            .custom-cursor::after { width: 9px; height: 9px; }
+        }
+
+        @media (max-width: 768px) {
+            .custom-cursor { width: 28px; height: 28px; opacity: 0.9; box-shadow: 0 0 12px var(--primary); }
+            .custom-cursor::after { width: 8px; height: 8px; box-shadow: 0 0 10px var(--primary); }
+        }
+
+        @media (pointer: coarse) {
+            .custom-cursor { display: none; }
+            body { cursor: default; }
+        }
+
+        /* ── Sisanya tetap sama ── */
         #bg-animation {
             position: fixed;
             inset: 0;
@@ -71,14 +100,11 @@
             background-size: 400% 400%;
             animation: gradientFlow 22s ease infinite;
         }
-
         @keyframes gradientFlow {
-            0%   { background-position: 0% 50%; }
-            50%  { background-position: 100% 50%; }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-        /* Floating Neon Blobs with Morph */
         .blob {
             position: absolute;
             border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
@@ -88,18 +114,15 @@
             pointer-events: none;
             animation: morphFloat 28s infinite ease-in-out;
         }
-
         .blob:nth-child(1) { width: 600px; height: 600px; top: -10%; left: -15%; animation-delay: 0s; background: radial-gradient(circle, var(--primary), transparent); }
         .blob:nth-child(2) { width: 700px; height: 700px; bottom: -20%; right: -20%; animation-delay: 10s; background: radial-gradient(circle, var(--accent1), transparent); }
         .blob:nth-child(3) { width: 500px; height: 500px; top: 40%; left: 60%; animation-delay: 18s; background: radial-gradient(circle, var(--accent2), transparent); }
-
         @keyframes morphFloat {
             0%,100% { border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; transform: translate(0, 0) rotate(0deg); }
-            25%     { border-radius: 40% 60% 30% 70% / 60% 40% 70% 30%; transform: translate(80px, -120px) rotate(10deg); }
-            50%     { border-radius: 70% 30% 50% 50% / 40% 70% 30% 60%; transform: translate(-100px, 100px) rotate(-15deg); }
-            75%     { border-radius: 50% 50% 60% 40% / 70% 30% 70% 30%; transform: translate(60px, -80px) rotate(5deg); }
+            25% { border-radius: 40% 60% 30% 70% / 60% 40% 70% 30%; transform: translate(80px, -120px) rotate(10deg); }
+            50% { border-radius: 70% 30% 50% 50% / 40% 70% 30% 60%; transform: translate(-100px, 100px) rotate(-15deg); }
+            75% { border-radius: 50% 50% 60% 40% / 70% 30% 70% 30%; transform: translate(60px, -80px) rotate(5deg); }
         }
-
         .header {
             position: fixed;
             top: 0; left: 0;
@@ -112,11 +135,9 @@
             border-bottom: 1px solid rgba(0,245,212,0.15);
             animation: slideDown 1.2s forwards;
         }
-
         @keyframes slideDown {
             to { transform: translateY(0); }
         }
-
         .header h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 4.2rem;
@@ -127,11 +148,9 @@
             color: transparent;
             animation: shine 10s linear infinite;
         }
-
         @keyframes shine {
             to { background-position: -300% 0; }
         }
-
         .content-wrapper {
             min-height: 100vh;
             display: flex;
@@ -139,7 +158,6 @@
             justify-content: center;
             padding: 160px 20px 160px;
         }
-
         .card-container {
             display: flex;
             flex-wrap: wrap;
@@ -147,7 +165,6 @@
             justify-content: center;
             max-width: 1200px;
         }
-
         .card {
             background: var(--card);
             backdrop-filter: blur(16px);
@@ -164,12 +181,10 @@
             opacity: 0;
             transform: translateY(40px);
         }
-
         .card.visible {
             opacity: 1;
             transform: translateY(0);
         }
-
         .card::before {
             content: '';
             position: absolute;
@@ -180,22 +195,18 @@
             transition: opacity 0.8s;
             animation: rotate 12s linear infinite paused;
         }
-
         .card:hover::before {
             opacity: 0.25;
             animation-play-state: running;
         }
-
         @keyframes rotate {
             to { transform: rotate(360deg); }
         }
-
         .card:hover {
             transform: translateY(-18px) scale(1.06);
             border-color: var(--primary);
             box-shadow: var(--glow-neon), 0 30px 60px rgba(0,245,212,0.25);
         }
-
         .card i {
             font-size: 3.2rem;
             margin-bottom: 1.2rem;
@@ -203,18 +214,14 @@
             transition: all 0.5s;
             filter: drop-shadow(0 0 10px var(--primary));
         }
-
         .card:hover i {
             transform: scale(1.2) rotate(8deg);
             color: var(--accent2);
         }
-
         .card span {
             font-size: 1.5rem;
             font-weight: 600;
         }
-
-        /* Welcome */
         .welcome-section {
             position: fixed;
             inset: 0;
@@ -227,12 +234,10 @@
             z-index: 200;
             transition: opacity 1.2s, visibility 1.2s;
         }
-
         .welcome-section.hide {
             opacity: 0;
             visibility: hidden;
         }
-
         .welcome-section h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 6.5rem;
@@ -243,12 +248,10 @@
             margin-bottom: 1.5rem;
             animation: breathing 9s infinite ease-in-out, shine 12s linear infinite;
         }
-
         @keyframes breathing {
             0%,100% { transform: scale(1); }
-            50%     { transform: scale(1.04); }
+            50% { transform: scale(1.04); }
         }
-
         .explore-btn {
             margin-top: 2.5rem;
             padding: 1.2rem 3.5rem;
@@ -262,13 +265,10 @@
             box-shadow: var(--glow-neon);
             transition: all 0.5s;
         }
-
         .explore-btn:hover {
             transform: translateY(-8px) scale(1.1);
             box-shadow: 0 25px 60px rgba(0,245,212,0.6);
         }
-
-        /* Info Panel */
         .info-panel {
             display: none;
             position: fixed;
@@ -281,9 +281,7 @@
             padding: 2rem;
             overflow-y: auto;
         }
-
         .info-panel.show { display: flex; }
-
         .panel-content {
             background: var(--card);
             backdrop-filter: blur(18px);
@@ -295,7 +293,6 @@
             box-shadow: var(--glow-neon), 0 25px 70px rgba(0,0,0,0.6);
             position: relative;
         }
-
         .close-btn {
             position: absolute;
             top: 1.8rem; right: 2rem;
@@ -306,19 +303,16 @@
             cursor: pointer;
             transition: all 0.4s;
         }
-
         .close-btn:hover {
             color: #ff4b5c;
             transform: rotate(180deg) scale(1.2);
         }
-
         .panel-content h2 {
             color: var(--primary);
             margin-bottom: 1.8rem;
             font-size: 3rem;
             font-family: 'Orbitron', sans-serif;
         }
-
         footer {
             position: fixed;
             bottom: 0;
@@ -332,7 +326,6 @@
             font-size: 1rem;
             z-index: 100;
         }
-
         @media (max-width: 768px) {
             .header h1 { font-size: 3rem; }
             .welcome-section h1 { font-size: 4.5rem; }
@@ -342,7 +335,8 @@
 </head>
 <body>
 
-    <div class="cursor" id="cursor"></div>
+    <!-- Cursor baru (ganti id lama) -->
+    <div class="custom-cursor"></div>
 
     <div id="bg-animation"></div>
     <div class="blob"></div>
@@ -352,15 +346,12 @@
     <!-- Audio Elements -->
     <audio id="hoverSound" preload="auto">
         <source src="https://assets.codepen.io/605876/hover-beep.mp3" type="audio/mpeg">
-        <!-- Ganti dengan URL audio hover Anda sendiri jika memungkinkan -->
     </audio>
     <audio id="clickSound" preload="auto">
         <source src="https://assets.codepen.io/605876/click-bling.mp3" type="audio/mpeg">
-        <!-- Ganti dengan URL audio click Anda sendiri -->
     </audio>
     <audio id="ambientLoop" loop preload="metadata">
         <source src="https://cdn.pixabay.com/audio/2023/08/07/audio_8b9d7f8e8e.mp3" type="audio/mpeg">
-        <!-- Contoh ambient cyberpunk loop dari Pixabay – ganti sesuai keinginan -->
     </audio>
 
     <!-- Welcome -->
@@ -402,31 +393,60 @@
     </footer>
 
     <script>
-        // Custom Cursor
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
+        // ── Custom Cursor Logic (smooth + ringan) ──
+        const cursor = document.querySelector('.custom-cursor');
+        let cursorX = 0, cursorY = 0;
+        let rafRunning = false;
 
-        // Audio
+        function updateCursor() {
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top  = cursorY + 'px';
+            rafRunning = false;
+        }
+
+        function onPointerMove(e) {
+            cursorX = e.clientX;
+            cursorY = e.clientY;
+            if (!rafRunning) {
+                rafRunning = true;
+                requestAnimationFrame(updateCursor);
+            }
+        }
+
+        function onHover()  { cursor.classList.add('hover'); }
+        function offHover() { cursor.classList.remove('hover'); }
+
+        function initCursor() {
+            if (!cursor) return;
+            window.addEventListener('pointermove', onPointerMove, { passive: true });
+
+            // Hover pada elemen interaktif
+            document.querySelectorAll('.card, .explore-btn, .close-btn, a')
+                .forEach(el => {
+                    el.addEventListener('mouseenter', onHover);
+                    el.addEventListener('mouseleave', offHover);
+                });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCursor);
+        } else {
+            initCursor();
+        }
+
+        // ── Kode sisanya tetap sama ──
         const hoverAudio = document.getElementById('hoverSound');
         const clickAudio = document.getElementById('clickSound');
         const ambientAudio = document.getElementById('ambientLoop');
-
         if (hoverAudio) hoverAudio.volume = 0.35;
         if (clickAudio) clickAudio.volume = 0.5;
         if (ambientAudio) ambientAudio.volume = 0.12;
 
         let userInteracted = false;
-
         document.body.addEventListener('click', () => {
-            if (!userInteracted) {
-                userInteracted = true;
-            }
+            if (!userInteracted) userInteracted = true;
         }, { once: true });
 
-        // Hover sound
         document.querySelectorAll('.card, .explore-btn, .close-btn').forEach(el => {
             el.addEventListener('mouseenter', () => {
                 if (userInteracted && hoverAudio && !hoverAudio.error) {
@@ -443,7 +463,6 @@
             }
         }
 
-        // Scroll Reveal
         const cards = document.querySelectorAll('.card');
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
@@ -452,17 +471,14 @@
                 }
             });
         }, { threshold: 0.2 });
-
         cards.forEach(card => observer.observe(card));
 
-        // Portfolio Functions
         function explorePortfolio() {
             playClick();
             document.getElementById("welcome").classList.add("hide");
             setTimeout(() => {
                 document.getElementById("welcome").style.display = "none";
                 document.getElementById("menu").style.display = "flex";
-                // Mulai ambient setelah interaksi pertama
                 if (ambientAudio && userInteracted) {
                     ambientAudio.play().catch(e => console.log("Ambient play dicegah:", e));
                 }
@@ -471,7 +487,6 @@
 
         function showInfo(section) {
             playClick();
-
             const titles = {
                 about: "About Me",
                 skills: "Skills & Arsenal",
@@ -479,7 +494,6 @@
                 project: "Projects Hub",
                 contact: "Connect With Me"
             };
-
             const contents = {
                 about: `<strong>Mission</strong><br>Lebih dari 10 tahun pengalaman di pengelolaan data, sistem administrasi, dan optimalisasi proses bisnis.<br><br><strong>Core Strength</strong><br>Advanced Microsoft Excel • Hardware troubleshooting • Legal & admin workflow optimization.`,
                 skills: `Hardware<br>• PC/Server assembly & repair<br>• Driver & configuration tuning<br><br>Software<br>• Excel Expert (Pivot Tables, Power Query, VBA)<br>• Digital document & inventory management<br><br>Admin & Legal<br>• Stock control • Profitability analysis • Contract & regulation compliance`,
@@ -487,7 +501,6 @@
                 project: `<strong>Work in Progress – Level Up</strong><br>Sedang mengembangkan tools otomatisasi Excel dan dashboard administrasi. Akan segera hadir dengan tampilan interaktif!`,
                 contact: `Email → <a href="mailto:primalimits@gmail.com" style="color:var(--primary)">primalimits@gmail.com</a><br>WhatsApp → <a href="https://wa.me/6283816379448" style="color:var(--primary)">+62 838-1637-9448</a><br>Siap diskusi seputar efisiensi & optimalisasi!`
             };
-
             document.getElementById("infoTitle").textContent = titles[section] || "Info";
             document.getElementById("infoContent").innerHTML = contents[section] || "Konten tidak tersedia.";
             document.getElementById("infoPanel").classList.add("show");
@@ -504,7 +517,6 @@
             if (e.key === "Escape") closeInfo();
         });
 
-        // Footer year
         const start = 2024;
         const now = new Date().getFullYear();
         document.getElementById("yearRange").textContent = start === now ? start : `${start}–${now}`;
