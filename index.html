@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Portfolio • Khoerul Imam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --primary: #00f5d4;
+            --primary-dark: #00a39c;
+            --accent1: #ff57c7;
+            --accent2: #a78bfa;
+            --bg: #0a0e17;
+            --card: rgba(20, 30, 50, 0.45);
+            --text: #e2e8f0;
+            --glow: rgba(0, 245, 212, 0.4);
+            --glow-neon: 0 0 20px rgba(0,245,212,0.6), 0 0 40px rgba(0,245,212,0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            cursor: none;
+        }
+
+        /* Custom Neon Cursor */
+        .cursor {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.15s ease;
+            mix-blend-mode: difference;
+            box-shadow: var(--glow-neon);
+        }
+
+        .cursor::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 8px; height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        /* Animated Gradient + Liquid Background */
+        #bg-animation {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: linear-gradient(135deg, #0f172a, #1e293b, #334155, #0f172a, #1e293b);
+            background-size: 400% 400%;
+            animation: gradientFlow 22s ease infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Neon Blobs with Morph */
+        .blob {
+            position: absolute;
+            border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+            background: radial-gradient(circle at 40% 30%, rgba(0,245,212,0.18), transparent 70%);
+            filter: blur(80px);
+            opacity: 0.3;
+            pointer-events: none;
+            animation: morphFloat 28s infinite ease-in-out;
+        }
+
+        .blob:nth-child(1) { width: 600px; height: 600px; top: -10%; left: -15%; animation-delay: 0s; background: radial-gradient(circle, var(--primary), transparent); }
+        .blob:nth-child(2) { width: 700px; height: 700px; bottom: -20%; right: -20%; animation-delay: 10s; background: radial-gradient(circle, var(--accent1), transparent); }
+        .blob:nth-child(3) { width: 500px; height: 500px; top: 40%; left: 60%; animation-delay: 18s; background: radial-gradient(circle, var(--accent2), transparent); }
+
+        @keyframes morphFloat {
+            0%,100% { border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; transform: translate(0, 0) rotate(0deg); }
+            25%     { border-radius: 40% 60% 30% 70% / 60% 40% 70% 30%; transform: translate(80px, -120px) rotate(10deg); }
+            50%     { border-radius: 70% 30% 50% 50% / 40% 70% 30% 60%; transform: translate(-100px, 100px) rotate(-15deg); }
+            75%     { border-radius: 50% 50% 60% 40% / 70% 30% 70% 30%; transform: translate(60px, -80px) rotate(5deg); }
+        }
+
+        .header {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            padding: 1.8rem 0;
+            text-align: center;
+            z-index: 100;
+            background: rgba(10,14,23,0.5);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0,245,212,0.15);
+            animation: slideDown 1.2s forwards;
+        }
+
+        @keyframes slideDown {
+            to { transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.2rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent2), var(--accent1), var(--primary));
+            background-size: 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 10s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: -300% 0; }
+        }
+
+        .content-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 160px 20px 160px;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            max-width: 1200px;
+        }
+
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0,245,212,0.22);
+            border-radius: 24px;
+            padding: 2.5rem 3rem;
+            min-width: 200px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.23,1,0.32,1);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4), inset 0 0 20px rgba(0,245,212,0.08);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%, transparent, var(--primary), transparent 30%);
+            opacity: 0;
+            transition: opacity 0.8s;
+            animation: rotate 12s linear infinite paused;
+        }
+
+        .card:hover::before {
+            opacity: 0.25;
+            animation-play-state: running;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .card:hover {
+            transform: translateY(-18px) scale(1.06);
+            border-color: var(--primary);
+            box-shadow: var(--glow-neon), 0 30px 60px rgba(0,245,212,0.25);
+        }
+
+        .card i {
+            font-size: 3.2rem;
+            margin-bottom: 1.2rem;
+            color: var(--primary);
+            transition: all 0.5s;
+            filter: drop-shadow(0 0 10px var(--primary));
+        }
+
+        .card:hover i {
+            transform: scale(1.2) rotate(8deg);
+            color: var(--accent2);
+        }
+
+        .card span {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Welcome */
+        .welcome-section {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10,14,23,0.7);
+            backdrop-filter: blur(12px);
+            z-index: 200;
+            transition: opacity 1.2s, visibility 1.2s;
+        }
+
+        .welcome-section.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .welcome-section h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 6.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent1), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+            animation: breathing 9s infinite ease-in-out, shine 12s linear infinite;
+        }
+
+        @keyframes breathing {
+            0%,100% { transform: scale(1); }
+            50%     { transform: scale(1.04); }
+        }
+
+        .explore-btn {
+            margin-top: 2.5rem;
+            padding: 1.2rem 3.5rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--accent2));
+            color: #0a0e17;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: var(--glow-neon);
+            transition: all 0.5s;
+        }
+
+        .explore-btn:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 25px 60px rgba(0,245,212,0.6);
+        }
+
+        /* Info Panel */
+        .info-panel {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10,14,23,0.88);
+            backdrop-filter: blur(20px);
+            z-index: 150;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .info-panel.show { display: flex; }
+
+        .panel-content {
+            background: var(--card);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(0,245,212,0.25);
+            border-radius: 28px;
+            padding: 3.5rem;
+            max-width: 1000px;
+            width: 92%;
+            box-shadow: var(--glow-neon), 0 25px 70px rgba(0,0,0,0.6);
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.8rem; right: 2rem;
+            background: none;
+            border: none;
+            font-size: 3.2rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.4s;
+        }
+
+        .close-btn:hover {
+            color: #ff4b5c;
+            transform: rotate(180deg) scale(1.2);
+        }
+
+        .panel-content h2 {
+            color: var(--primary);
+            margin-bottom: 1.8rem;
+            font-size: 3rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 1.4rem;
+            background: rgba(10,14,23,0.5);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(0,245,212,0.15);
+            color: #94a3b8;
+            font-size: 1rem;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 3rem; }
+            .welcome-section h1 { font-size: 4.5rem; }
+            .card { min-width: 160px; padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor" id="cursor"></div>
+
+    <div id="bg-animation"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+
+    <!-- Audio Elements -->
+    <audio id="hoverSound" preload="auto">
+        <source src="https://assets.codepen.io/605876/hover-beep.mp3" type="audio/mpeg">
+        <!-- Ganti dengan URL audio hover Anda sendiri jika memungkinkan -->
+    </audio>
+    <audio id="clickSound" preload="auto">
+        <source src="https://assets.codepen.io/605876/click-bling.mp3" type="audio/mpeg">
+        <!-- Ganti dengan URL audio click Anda sendiri -->
+    </audio>
+    <audio id="ambientLoop" loop preload="metadata">
+        <source src="https://cdn.pixabay.com/audio/2023/08/07/audio_8b9d7f8e8e.mp3" type="audio/mpeg">
+        <!-- Contoh ambient cyberpunk loop dari Pixabay – ganti sesuai keinginan -->
+    </audio>
+
+    <!-- Welcome -->
+    <div class="welcome-section" id="welcome">
+        <h1>PORTFOLIO</h1>
+        <p style="font-size:2rem; opacity:0.9; margin:1.8rem 0; font-weight:300;">Khoerul Imam • Data • Admin • Systems Journey</p>
+        <button class="explore-btn" onclick="explorePortfolio()">Explore Now</button>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>PORTFOLIO</h1>
+        <p style="font-size:1.5rem; opacity:0.85; margin:0.5rem 0;">Khoerul Imam</p>
+        <p style="font-size:1.2rem; opacity:0.7;">10+ Years • Efficiency • Optimization</p>
+    </div>
+
+    <!-- Menu -->
+    <div class="content-wrapper" id="menu" style="display:none;">
+        <div class="card-container">
+            <div class="card" onclick="showInfo('about')"><i class="fas fa-user-astronaut"></i><br><span>About</span></div>
+            <div class="card" onclick="showInfo('skills')"><i class="fas fa-microchip"></i><br><span>Skills</span></div>
+            <div class="card" onclick="showInfo('experience')"><i class="fas fa-briefcase"></i><br><span>Experience</span></div>
+            <div class="card" onclick="showInfo('project')"><i class="fas fa-rocket"></i><br><span>Project</span></div>
+            <div class="card" onclick="showInfo('contact')"><i class="fas fa-link"></i><br><span>Contact</span></div>
+        </div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="info-panel" id="infoPanel">
+        <div class="panel-content">
+            <button class="close-btn" onclick="closeInfo()">×</button>
+            <h2 id="infoTitle">Title</h2>
+            <div id="infoContent" style="line-height:1.8; font-size:1.2rem;"></div>
+        </div>
+    </div>
+
+    <footer>
+        © <span id="yearRange"></span> Khoerul Imam • All rights reserved • Neon Cyber Vibes
+    </footer>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Audio
+        const hoverAudio = document.getElementById('hoverSound');
+        const clickAudio = document.getElementById('clickSound');
+        const ambientAudio = document.getElementById('ambientLoop');
+
+        if (hoverAudio) hoverAudio.volume = 0.35;
+        if (clickAudio) clickAudio.volume = 0.5;
+        if (ambientAudio) ambientAudio.volume = 0.12;
+
+        let userInteracted = false;
+
+        document.body.addEventListener('click', () => {
+            if (!userInteracted) {
+                userInteracted = true;
+            }
+        }, { once: true });
+
+        // Hover sound
+        document.querySelectorAll('.card, .explore-btn, .close-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                if (userInteracted && hoverAudio && !hoverAudio.error) {
+                    hoverAudio.currentTime = 0;
+                    hoverAudio.play().catch(() => {});
+                }
+            });
+        });
+
+        function playClick() {
+            if (userInteracted && clickAudio && !clickAudio.error) {
+                clickAudio.currentTime = 0;
+                clickAudio.play().catch(() => {});
+            }
+        }
+
+        // Scroll Reveal
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        cards.forEach(card => observer.observe(card));
+
+        // Portfolio Functions
+        function explorePortfolio() {
+            playClick();
+            document.getElementById("welcome").classList.add("hide");
+            setTimeout(() => {
+                document.getElementById("welcome").style.display = "none";
+                document.getElementById("menu").style.display = "flex";
+                // Mulai ambient setelah interaksi pertama
+                if (ambientAudio && userInteracted) {
+                    ambientAudio.play().catch(e => console.log("Ambient play dicegah:", e));
+                }
+            }, 1000);
+        }
+
+        function showInfo(section) {
+            playClick();
+
+            const titles = {
+                about: "About Me",
+                skills: "Skills & Arsenal",
+                experience: "Career Timeline",
+                project: "Projects Hub",
+                contact: "Connect With Me"
+            };
+
+            const contents = {
+                about: `<strong>Mission</strong><br>Lebih dari 10 tahun pengalaman di pengelolaan data, sistem administrasi, dan optimalisasi proses bisnis.<br><br><strong>Core Strength</strong><br>Advanced Microsoft Excel • Hardware troubleshooting • Legal & admin workflow optimization.`,
+                skills: `Hardware<br>• PC/Server assembly & repair<br>• Driver & configuration tuning<br><br>Software<br>• Excel Expert (Pivot Tables, Power Query, VBA)<br>• Digital document & inventory management<br><br>Admin & Legal<br>• Stock control • Profitability analysis • Contract & regulation compliance`,
+                experience: `2009–2014 • Matrix.Net — Computer Technician<br>• Hardware/software troubleshooting • Network & server support<br><br>2016–2021 • Airmas Perkasa PT — Product Admin<br>• Inventory management • Sales & performance reporting • Supplier coordination<br><br>2021–Present • Makmur Emas Gemilau PT — Admin & Legal<br>• Legal document handling • Profit analysis • Annual performance reports`,
+                project: `<strong>Work in Progress – Level Up</strong><br>Sedang mengembangkan tools otomatisasi Excel dan dashboard administrasi. Akan segera hadir dengan tampilan interaktif!`,
+                contact: `Email → <a href="mailto:primalimits@gmail.com" style="color:var(--primary)">primalimits@gmail.com</a><br>WhatsApp → <a href="https://wa.me/6283816379448" style="color:var(--primary)">+62 838-1637-9448</a><br>Siap diskusi seputar efisiensi & optimalisasi!`
+            };
+
+            document.getElementById("infoTitle").textContent = titles[section] || "Info";
+            document.getElementById("infoContent").innerHTML = contents[section] || "Konten tidak tersedia.";
+            document.getElementById("infoPanel").classList.add("show");
+            document.getElementById("menu").style.display = "none";
+        }
+
+        function closeInfo() {
+            playClick();
+            document.getElementById("infoPanel").classList.remove("show");
+            document.getElementById("menu").style.display = "flex";
+        }
+
+        document.addEventListener("keydown", e => {
+            if (e.key === "Escape") closeInfo();
+        });
+
+        // Footer year
+        const start = 2024;
+        const now = new Date().getFullYear();
+        document.getElementById("yearRange").textContent = start === now ? start : `${start}–${now}`;
+    </script>
+</body>
+</html>
